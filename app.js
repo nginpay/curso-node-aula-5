@@ -13,7 +13,8 @@ const AdminBro = require('admin-bro');
 const AdminBroExpress = require('@admin-bro/express');
 
 const AdminBroSequelize = require('@admin-bro/sequelize');
-const db = require('./model/posts');
+const Posts = require('./model/posts');
+const db = require('./lib/db');
 
 AdminBro.registerAdapter(AdminBroSequelize);
 
@@ -23,11 +24,23 @@ var usersRouter = require('./routes/users');
 var app = express();
 
 
-
 const adminBro = new AdminBro({
   databases: [db],
   rootPath: '/admin',
 })
+
+
+const adminBroOptions = {
+  resources: [
+    {
+      resource: Posts, options: { 
+        properties: {
+          Content: { type: 'richtext'},
+        },
+      },
+    },
+  ],
+};
 
 const router = AdminBroExpress.buildRouter(adminBro)
 app.use(adminBro.options.rootPath, router)
