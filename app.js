@@ -27,20 +27,18 @@ var app = express();
 const adminBro = new AdminBro({
   databases: [db],
   rootPath: '/admin',
-})
-
-
-const adminBroOptions = {
   resources: [
     {
       resource: Posts, options: { 
         properties: {
-          Content: { type: 'richtext'},
+          content: { type: 'richtext'},
         },
       },
     },
   ],
-};
+})
+
+
 
 const router = AdminBroExpress.buildRouter(adminBro)
 app.use(adminBro.options.rootPath, router)
